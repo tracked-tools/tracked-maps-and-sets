@@ -1,11 +1,27 @@
+import { DEBUG } from '@glimmer/env';
 import {
   consumeKey,
   consumeCollection,
   dirtyKey,
-  dirtyCollection
+  dirtyCollection,
+  createDebugProxy,
 } from './util';
 
+const SELF: unique symbol = DEBUG && typeof Symbol === 'function' ? Symbol() : undefined as any;
+
 export class TrackedSet<T = any> extends Set<T> {
+  [SELF]: TrackedSet<T>;
+
+  constructor(entries?: Iterable<T>) {
+    super(entries);
+
+    if (DEBUG && typeof Proxy === 'function') {
+      this[SELF!] = createDebugProxy(this, Set);
+
+      return this[SELF!]
+    }
+  }
+
   // **** KEY GETTERS ****
   has(value: T) {
     consumeKey(this, value);
@@ -15,31 +31,31 @@ export class TrackedSet<T = any> extends Set<T> {
 
   // **** ALL GETTERS ****
   entries() {
-    consumeCollection(this);
+    consumeCollection(DEBUG ? this[SELF] : this);
 
     return super.entries();
   }
 
   keys() {
-    consumeCollection(this);
+    consumeCollection(DEBUG ? this[SELF] : this);
 
     return super.keys();
   }
 
   values() {
-    consumeCollection(this);
+    consumeCollection(DEBUG ? this[SELF] : this);
 
     return super.values();
   }
 
   forEach(fn: (value1: T, value2: T, map: this) => void) {
-    consumeCollection(this);
+    consumeCollection(DEBUG ? this[SELF] : this);
 
     super.forEach(fn);
   }
 
   get size() {
-    consumeCollection(this);
+    consumeCollection(DEBUG ? this[SELF] : this);
 
     return super.size;
   }
@@ -47,14 +63,14 @@ export class TrackedSet<T = any> extends Set<T> {
   // **** KEY SETTERS ****
   add(value: T) {
     dirtyKey(this, value);
-    dirtyCollection(this);
+    dirtyCollection(DEBUG ? this[SELF] || this : this);
 
     return super.add(value);
   }
 
   delete(value: T) {
     dirtyKey(this, value);
-    dirtyCollection(this);
+    dirtyCollection(DEBUG ? this[SELF] : this);
 
     return super.delete(value);
   }
@@ -62,7 +78,7 @@ export class TrackedSet<T = any> extends Set<T> {
   // **** ALL SETTERS ****
   clear() {
     super.forEach((_v, k) => dirtyKey(this, k));
-    dirtyCollection(this);
+    dirtyCollection(DEBUG ? this[SELF] : this);
 
     return super.clear();
   }
@@ -73,13 +89,21 @@ if (typeof Symbol !== undefined) {
 
   Object.defineProperty(TrackedSet.prototype, Symbol.iterator, {
     get() {
-      consumeCollection(this);
+      consumeCollection(DEBUG ? this[SELF] : this);
       return originalIterator;
     }
   });
 }
 
 export class TrackedWeakSet<T extends object = object> extends WeakSet<T> {
+  constructor(entries?: Iterable<T>) {
+    super(entries as undefined);
+
+    if (DEBUG && typeof Proxy === 'function') {
+      return createDebugProxy(this, WeakSet);
+    }
+  }
+
   has(value: T) {
     consumeKey(this, value);
 

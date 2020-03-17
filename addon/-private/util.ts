@@ -61,3 +61,21 @@ export function consumeKey(obj: object, key: unknown) {
 export function dirtyKey(obj: object, key: unknown) {
   dirtyTag(getOrCreateTag(obj, key));
 }
+
+//////////
+
+export function createDebugProxy(target: any, constructor: any) {
+  return new Proxy(target, {
+    get(target, prop) {
+      if (typeof (target as any)[prop] === 'function') {
+        return (target as any)[prop].bind(target);
+      }
+
+      return (target as any)[prop];
+    },
+
+    getPrototypeOf() {
+      return constructor.prototype;
+    }
+  })
+}
