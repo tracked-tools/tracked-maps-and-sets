@@ -5,7 +5,7 @@ import {
   dirtyCollection
 } from './util';
 
-export class TrackedSet<T = any> extends Set<T> {
+export class TrackedSet<T = unknown> extends Set<T> {
   // **** KEY GETTERS ****
   has(value: T) {
     consumeKey(this, value);

@@ -5,7 +5,7 @@ import {
   dirtyCollection
 } from './util';
 
-export class TrackedMap<K = any, V = any> extends Map<K, V> {
+export class TrackedMap<K = unknown, V = unknown> extends Map<K, V> {
   // **** KEY GETTERS ****
   get(key: K) {
     consumeKey(this, key);
@@ -85,7 +85,7 @@ if (typeof Symbol !== undefined) {
   });
 }
 
-export class TrackedWeakMap<K extends object = object, V = any> extends WeakMap<
+export class TrackedWeakMap<K extends object = object, V = unknown> extends WeakMap<
   K,
   V
 > {
