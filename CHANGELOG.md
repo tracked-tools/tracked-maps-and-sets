@@ -1,3 +1,14 @@
+## v2.0.0 (2020-03-17)
+
+#### :boom: Breaking Change
+* [#4](https://github.com/pzuraq/tracked-maps-and-sets/pull/4) [BUGFIX] Uses unknown rather than any for default types ([@pzuraq](https://github.com/pzuraq))
+
+#### :bug: Bug Fix
+* [#4](https://github.com/pzuraq/tracked-maps-and-sets/pull/4) [BUGFIX] Uses unknown rather than any for default types ([@pzuraq](https://github.com/pzuraq))
+
+#### Committers: 1
+- Chris Garrett ([@pzuraq](https://github.com/pzuraq))
+
 ## v1.0.1 (2020-03-17)
 
 #### :bug: Bug Fix
