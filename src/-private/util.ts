@@ -1,5 +1,4 @@
 import { tracked } from '@glimmer/tracking';
-import { get, notifyPropertyChange } from '@ember/object';
 
 class Tag {
   @tracked private __tag_value__: undefined;
@@ -24,12 +23,23 @@ export const dirtyTag = Tag.dirtyTag;
 
 ////////////
 
-export function consumeCollection(obj: object) {
-  get(obj as { '[]': unknown }, '[]');
-}
+const COLLECTION_SYMBOL = {};
 
-export function dirtyCollection(obj: object) {
-  notifyPropertyChange(obj, '[]')
+export let consumeCollection = (obj: object): void => {
+  consumeKey(obj, COLLECTION_SYMBOL);
+};
+
+export let dirtyCollection = (obj: object): void => {
+  dirtyKey(obj, COLLECTION_SYMBOL);
+};
+
+declare const Ember: any;
+
+if (Ember !== undefined) {
+  // eslint-disable-next-line ember/new-module-imports
+  consumeCollection = (obj): void => Ember.get(obj, '[]');
+  // eslint-disable-next-line ember/new-module-imports
+  dirtyCollection = (obj): void => Ember.notifyPropertyChange(obj, '[]');
 }
 
 ////////////

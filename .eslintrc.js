@@ -30,7 +30,7 @@ module.exports = {
         '.eslintrc.js',
         '.template-lintrc.js',
         'ember-cli-build.js',
-        'index.js',
+        'ember-addon-main.js',
         'testem.js',
         'blueprints/*/index.js',
         'config/**/*.js',
