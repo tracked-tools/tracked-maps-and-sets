@@ -10,6 +10,7 @@
   "author": "Chris Hewell Garrett",
   "main": "commonjs/index.js",
   "module": "addon/index.js",
+  "types": "commonjs/index.d.ts",
   "files": [
     "addon/**/*",
     "ember-addon-main.js"
@@ -19,7 +20,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build:ts": "tsc && tsc --outDir commonjs --module CommonJS",
+    "build:ts": "tsc && tsc --declaration --outDir commonjs --module CommonJS",
     "build": "ember build --environment=production",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
