@@ -1,3 +1,11 @@
+## v2.2.0 (2020-11-05)
+
+#### :rocket: Enhancement
+* [#9](https://github.com/pzuraq/tracked-maps-and-sets/pull/9) Generate and include TypeScript types in published build ([@nathanielw](https://github.com/nathanielw))
+
+#### Committers: 1
+- Nate Watson ([@nathanielw](https://github.com/nathanielw))
+
 ## v2.1.0 (2020-05-19)
 
 #### :rocket: Enhancement
