@@ -13,6 +13,7 @@
   "types": "commonjs/index.d.ts",
   "files": [
     "addon/**/*",
+    "commonjs/**/*",
     "ember-addon-main.js"
   ],
   "directories": {
