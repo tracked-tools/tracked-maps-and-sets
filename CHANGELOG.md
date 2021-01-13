@@ -1,3 +1,11 @@
+## v2.2.1 (2021-01-13)
+
+#### :bug: Bug Fix
+* [#15](https://github.com/pzuraq/tracked-maps-and-sets/pull/15) commonjs/index.d.ts should be included in the package ([@BryanCrotaz](https://github.com/BryanCrotaz))
+
+#### Committers: 1
+- Bryan ([@BryanCrotaz](https://github.com/BryanCrotaz))
+
 ## v2.2.0 (2020-11-05)
 
 #### :rocket: Enhancement
