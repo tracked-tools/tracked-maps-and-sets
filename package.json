@@ -30,7 +30,7 @@
     "start": "ember serve",
     "test": "yarn build:ts && ember test",
     "test:all": "ember try:each",
-    "prepublish": "yarn build:ts"
+    "prepare": "yarn build:ts"
   },
   "dependencies": {
     "@glimmer/tracking": "^1.0.0",
