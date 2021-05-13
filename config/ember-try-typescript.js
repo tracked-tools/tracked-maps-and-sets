@@ -3,6 +3,30 @@ module.exports = {
   command: 'tsc --noEmit',
   scenarios: [
     {
+      name: 'ts-3.7',
+      npm: {
+        typescript: '~3.7',
+      },
+    },
+    {
+      name: 'ts-3.8',
+      npm: {
+        typescript: '~3.8',
+      },
+    },
+    {
+      name: 'ts-3.9',
+      npm: {
+        typescript: '~3.9',
+      },
+    },
+    {
+      name: 'ts-4.0',
+      npm: {
+        typescript: '~4.0',
+      },
+    },
+    {
       name: 'ts-4.1',
       npm: {
         typescript: '~4.1',
