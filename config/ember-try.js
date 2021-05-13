@@ -2,7 +2,14 @@
 
 const getChannelURL = require('ember-source-channel-url');
 
-module.exports = async function() {
+const typeTests = require('./ember-try-typescript');
+
+const typeScriptScenarios = typeTests.scenarios.map((s) => ({
+  ...s,
+  command: typeTests.command,
+}));
+
+module.exports = async function () {
   return {
     useYarn: true,
     scenarios: [
@@ -10,33 +17,49 @@ module.exports = async function() {
         name: 'ember-lts-3.16',
         npm: {
           devDependencies: {
-            'ember-source': '~3.16.0'
-          }
-        }
+            'ember-source': '~3.16.10',
+          },
+        },
+      },
+      {
+        name: 'ember-lts-3.20',
+        npm: {
+          devDependencies: {
+            'ember-source': '~3.20.6',
+          },
+        },
+      },
+      {
+        name: 'ember-lts-3.24',
+        npm: {
+          devDependencies: {
+            'ember-source': '~3.24.3',
+          },
+        },
       },
       {
         name: 'ember-release',
         npm: {
           devDependencies: {
-            'ember-source': await getChannelURL('release')
-          }
-        }
+            'ember-source': await getChannelURL('release'),
+          },
+        },
       },
       {
         name: 'ember-beta',
         npm: {
           devDependencies: {
-            'ember-source': await getChannelURL('beta')
-          }
-        }
+            'ember-source': await getChannelURL('beta'),
+          },
+        },
       },
       {
         name: 'ember-canary',
         npm: {
           devDependencies: {
-            'ember-source': await getChannelURL('canary')
-          }
-        }
+            'ember-source': await getChannelURL('canary'),
+          },
+        },
       },
       // The default `.travis.yml` runs this scenario via `yarn test`,
       // not via `ember try`. It's still included here so that running
@@ -45,21 +68,21 @@ module.exports = async function() {
       {
         name: 'ember-default',
         npm: {
-          devDependencies: {}
-        }
+          devDependencies: {},
+        },
       },
       {
         name: 'ember-default-with-jquery',
         env: {
           EMBER_OPTIONAL_FEATURES: JSON.stringify({
-            'jquery-integration': true
-          })
+            'jquery-integration': true,
+          }),
         },
         npm: {
           devDependencies: {
-            '@ember/jquery': '^0.5.1'
-          }
-        }
+            '@ember/jquery': '^0.5.1',
+          },
+        },
       },
       {
         name: 'ember-classic',
@@ -67,15 +90,20 @@ module.exports = async function() {
           EMBER_OPTIONAL_FEATURES: JSON.stringify({
             'application-template-wrapper': true,
             'default-async-observers': false,
-            'template-only-glimmer-components': false
-          })
+            'template-only-glimmer-components': false,
+          }),
         },
         npm: {
           ember: {
-            edition: 'classic'
-          }
-        }
-      }
-    ]
+            edition: 'classic',
+          },
+        },
+      },
+
+      // Include the type tests, while still leaving them in their own file so
+      // they can be run independently, for example to run all the type tests but
+      // *only* the type tests locally.
+      ...typeScriptScenarios,
+    ],
   };
 };

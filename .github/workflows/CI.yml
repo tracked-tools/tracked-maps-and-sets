@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  pull_request:
+    # filtering branches here prevents duplicate builds from pull_request and push
+    branches:
+      - main
+      - 'v*'
+    # always run CI for tags
+    tags:
+      - '*'
+  push:
+    branches:
+      - main
+      - 'v*'
+
+jobs:
+  lint:
+    name: 'Linting'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: volta-cli/action@v1
+      - run: yarn install --frozen-lockfile --non-interactive
+      - run: yarn lint
+
+  tests_linux:
+    needs: lint
+    name: 'Tests: ubuntu (node@${{ matrix.node-version }})'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['10', '12', '14']
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: volta-cli/action@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install --frozen-lockfile --non-interactive
+      - run: yarn ember test
+
+  tests_other:
+    needs: lint
+    name: 'Tests: ${{ matrix.os }}'
+    runs-on: '${{ matrix.os }}-latest'
+
+    strategy:
+      matrix:
+        os: [macOS, windows]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: volta-cli/action@v1
+      - run: yarn install --frozen-lockfile --non-interactive
+      - run: yarn ember test
+
+  tests_ember_compat:
+    needs: [lint, tests_linux]
+    name: 'Ember compatibility tests: ember-source@${{ matrix.ember-version }})'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ember-version:
+          ['lts-3.16', 'lts-3.20', 'lts-3.24', 'release', 'beta', 'canary']
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: volta-cli/action@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install --frozen-lockfile --non-interactive
+      - run: yarn ember try:one ember-${{ matrix.ember-version }}
+
+  tests_ts_compat:
+    needs: lint
+    name: 'Type checking: TS ${{ matrix.ts-version }}'
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    strategy:
+      matrix:
+        ts-version: ['4.1', '4.2', 'next']
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: volta-cli/action@v1
+      - run: yarn install --frozen-lockfile --non-interactive
+      - run: './node_modules/.bin/ember try:one ts-${{ matrix.ts-version }}'
