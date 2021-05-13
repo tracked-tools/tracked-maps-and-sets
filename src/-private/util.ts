@@ -35,7 +35,7 @@ export let dirtyCollection = (obj: object): void => {
 
 declare const Ember: any;
 
-if (Ember !== undefined) {
+if (typeof Ember !== 'undefined') {
   // eslint-disable-next-line ember/new-module-imports
   consumeCollection = (obj): void => Ember.get(obj, '[]');
   // eslint-disable-next-line ember/new-module-imports
