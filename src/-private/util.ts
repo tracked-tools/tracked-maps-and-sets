@@ -33,13 +33,11 @@ export let dirtyCollection = (obj: object): void => {
   dirtyKey(obj, COLLECTION_SYMBOL);
 };
 
-declare const Ember: any;
+declare const globalThis: any;
 
-if (typeof Ember !== 'undefined') {
-  // eslint-disable-next-line ember/new-module-imports
-  consumeCollection = (obj): void => Ember.get(obj, '[]');
-  // eslint-disable-next-line ember/new-module-imports
-  dirtyCollection = (obj): void => Ember.notifyPropertyChange(obj, '[]');
+if ('Ember' in globalThis) {
+  consumeCollection = (obj): void => globalThis.Ember.get(obj, '[]');
+  dirtyCollection = (obj): void => globalThis.Ember.notifyPropertyChange(obj, '[]');
 }
 
 ////////////
