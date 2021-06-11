@@ -1,4 +1,5 @@
 import { tracked } from '@glimmer/tracking';
+import { gte } from 'ember-compatibility-helpers';
 
 class Tag {
   @tracked private __tag_value__: undefined;
@@ -35,7 +36,7 @@ export let dirtyCollection = (obj: object): void => {
 
 declare const Ember: any;
 
-if (typeof Ember !== 'undefined') {
+if (!gte('3.24.0')) {
   // eslint-disable-next-line ember/new-module-imports
   consumeCollection = (obj): void => Ember.get(obj, '[]');
   // eslint-disable-next-line ember/new-module-imports
