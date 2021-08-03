@@ -1,100 +1,172 @@
 import {
-  consumeKey,
-  consumeCollection,
-  dirtyKey,
-  dirtyCollection
-} from './util';
+  TrackedStorage,
+  createStorage,
+  getValue,
+  setValue,
+} from 'ember-tracked-storage-polyfill';
 
-export class TrackedSet<T = unknown> extends Set<T> {
+export class TrackedSet<T = unknown> implements Set<T> {
+  private collection = createStorage(null, () => false);
+
+  private storages: Map<T, TrackedStorage<null>> = new Map();
+
+  private vals: Set<T>;
+
+  private storageFor(key: T): TrackedStorage<null> {
+    const storages = this.storages;
+    let storage = storages.get(key);
+
+    if (storage === undefined) {
+      storage = createStorage(null, () => false);
+      storages.set(key, storage);
+    }
+
+    return storage;
+  }
+
+  private dirtyStorageFor(key: T): void {
+    const storage = this.storages.get(key);
+
+    if (storage) {
+      setValue(storage, null);
+    }
+  }
+
+  constructor(values?: readonly T[] | null) {
+    this.vals = new Set(values);
+  }
+
   // **** KEY GETTERS ****
-  has(value: T) {
-    consumeKey(this, value);
+  has(value: T): boolean {
+    getValue(this.storageFor(value));
 
-    return super.has(value);
+    return this.vals.has(value);
   }
 
   // **** ALL GETTERS ****
-  entries() {
-    consumeCollection(this);
+  entries(): IterableIterator<[T, T]> {
+    getValue(this.collection)
 
-    return super.entries();
+    return this.vals.entries();
   }
 
-  keys() {
-    consumeCollection(this);
+  keys(): IterableIterator<T> {
+    getValue(this.collection)
 
-    return super.keys();
+    return this.vals.keys();
   }
 
-  values() {
-    consumeCollection(this);
+  values(): IterableIterator<T> {
+    getValue(this.collection)
 
-    return super.values();
+    return this.vals.values();
   }
 
-  forEach(fn: (value1: T, value2: T, map: this) => void) {
-    consumeCollection(this);
+  forEach(fn: (value1: T, value2: T, set: Set<T>) => void): void {
+    getValue(this.collection)
 
-    super.forEach(fn);
+    this.vals.forEach(fn);
   }
 
-  get size() {
-    consumeCollection(this);
+  get size(): number {
+    getValue(this.collection)
 
-    return super.size;
+    return this.vals.size;
+  }
+
+  [Symbol.iterator](): IterableIterator<T> {
+    getValue(this.collection);
+
+    return this.vals[Symbol.iterator]();
+  }
+
+  get [Symbol.toStringTag](): string {
+    return this.vals[Symbol.toStringTag];
   }
 
   // **** KEY SETTERS ****
-  add(value: T) {
-    dirtyKey(this, value);
-    dirtyCollection(this);
+  add(value: T): this {
+    this.dirtyStorageFor(value)
+    setValue(this.collection, null);
 
-    return super.add(value);
+    this.vals.add(value);
+
+    return this;
   }
 
-  delete(value: T) {
-    dirtyKey(this, value);
-    dirtyCollection(this);
+  delete(value: T): boolean {
+    this.dirtyStorageFor(value);
+    setValue(this.collection, null);
 
-    return super.delete(value);
+    return this.vals.delete(value);
   }
 
   // **** ALL SETTERS ****
-  clear() {
-    super.forEach((_v, k) => dirtyKey(this, k));
-    dirtyCollection(this);
+  clear(): void {
+    this.storages.forEach((s) => setValue(s, null));
+    setValue(this.collection, null);
 
-    return super.clear();
+    this.vals.clear();
   }
 }
 
-if (typeof Symbol !== undefined) {
-  let originalIterator = TrackedSet.prototype[Symbol.iterator];
+// So instanceof works
+Object.setPrototypeOf(TrackedSet, Set.prototype);
 
-  Object.defineProperty(TrackedSet.prototype, Symbol.iterator, {
-    get() {
-      consumeCollection(this);
-      return originalIterator;
+export class TrackedWeakSet<T extends object = object> implements WeakSet<T> {
+  private storages: WeakMap<T, TrackedStorage<null>> = new WeakMap();
+
+  private vals: WeakSet<T>;
+
+  private storageFor(key: T): TrackedStorage<null> {
+    const storages = this.storages;
+    let storage = storages.get(key);
+
+    if (storage === undefined) {
+      storage = createStorage(null, () => false);
+      storages.set(key, storage);
     }
-  });
+
+    return storage;
+  }
+
+  private dirtyStorageFor(key: T): void {
+    const storage = this.storages.get(key);
+
+    if (storage) {
+      setValue(storage, null);
+    }
+  }
+
+  constructor(values?: readonly T[] | null) {
+    this.vals = new WeakSet(values);
+  }
+
+  has(value: T): boolean {
+    getValue(this.storageFor(value));
+
+    return this.vals.has(value);
+  }
+
+  add(value: T): this {
+    // Add to vals first to get better error message
+    this.vals.add(value);
+
+    this.dirtyStorageFor(value);
+
+    return this;
+  }
+
+  delete(value: T): boolean {
+    this.dirtyStorageFor(value);
+
+    return this.vals.delete(value);
+  }
+
+  get [Symbol.toStringTag](): string {
+    return this.vals[Symbol.toStringTag];
+  }
 }
 
-export class TrackedWeakSet<T extends object = object> extends WeakSet<T> {
-  has(value: T) {
-    consumeKey(this, value);
-
-    return super.has(value);
-  }
-
-  add(value: T) {
-    dirtyKey(this, value);
-
-    return super.add(value);
-  }
-
-  delete(value: T) {
-    dirtyKey(this, value);
-
-    return super.delete(value);
-  }
-}
+// So instanceof works
+Object.setPrototypeOf(TrackedWeakSet, WeakSet.prototype);

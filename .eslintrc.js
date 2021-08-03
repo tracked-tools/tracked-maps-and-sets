@@ -11,11 +11,12 @@ module.exports = {
     }
   },
   plugins: [
-    'ember'
+    'ember',
+    '@typescript-eslint'
   ],
   extends: [
     'eslint:recommended',
-    'plugin:ember/recommended'
+    'plugin:ember/recommended',
   ],
   env: {
     browser: true
@@ -54,6 +55,24 @@ module.exports = {
       rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
         // add your custom rules and overrides for node files here
       })
+    },
+    // TS
+    {
+      files: ['**/*.ts'],
+      extends: [
+        'plugin:@typescript-eslint/recommended',
+      ],
+      rules: {
+        '@typescript-eslint/ban-types': [
+          'error',
+          {
+            extendDefaults: true,
+            types: {
+              object: false,
+            }
+          }
+        ]
+      }
     }
   ]
 };

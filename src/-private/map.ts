@@ -1,115 +1,187 @@
 import {
-  consumeKey,
-  consumeCollection,
-  dirtyKey,
-  dirtyCollection
-} from './util';
+  TrackedStorage,
+  createStorage,
+  getValue,
+  setValue,
+} from 'ember-tracked-storage-polyfill';
 
-export class TrackedMap<K = unknown, V = unknown> extends Map<K, V> {
-  // **** KEY GETTERS ****
-  get(key: K) {
-    consumeKey(this, key);
+export class TrackedMap<K = unknown, V = unknown> implements Map<K, V> {
+  private collection = createStorage(null, () => false);
 
-    return super.get(key);
+  private storages: Map<K, TrackedStorage<null>> = new Map();
+
+  private vals: Map<K, V>;
+
+  private readStorageFor(key: K): void {
+    const { storages } = this;
+    let storage = storages.get(key);
+
+    if (storage === undefined) {
+      storage = createStorage(null, () => false);
+      storages.set(key, storage);
+    }
+
+    getValue(storage);
   }
 
-  has(key: K) {
-    consumeKey(this, key);
+  private dirtyStorageFor(key: K): void {
+    const storage = this.storages.get(key);
 
-    return super.has(key);
+    if (storage) {
+      setValue(storage, null);
+    }
+  }
+
+  constructor(entries?: readonly (readonly [K, V])[] | null) {
+    this.vals = new Map(entries);
+  }
+
+  // **** KEY GETTERS ****
+  get(key: K): V | undefined {
+    // entangle the storage for the key
+    this.readStorageFor(key);
+
+    return this.vals.get(key);
+  }
+
+  has(key: K): boolean {
+    this.readStorageFor(key);
+
+    return this.vals.has(key);
   }
 
   // **** ALL GETTERS ****
-  entries() {
-    consumeCollection(this);
+  entries(): IterableIterator<[K, V]> {
+    getValue(this.collection);
 
-    return super.entries();
+    return this.vals.entries();
   }
 
-  keys() {
-    consumeCollection(this);
+  keys(): IterableIterator<K> {
+    getValue(this.collection);
 
-    return super.keys();
+    return this.vals.keys();
   }
 
-  values() {
-    consumeCollection(this);
+  values(): IterableIterator<V> {
+    getValue(this.collection);
 
-    return super.values();
+    return this.vals.values();
   }
 
-  forEach(fn: (value: V, key: K, map: this) => void) {
-    consumeCollection(this);
+  forEach(fn: (value: V, key: K, map: Map<K, V>) => void): void {
+    getValue(this.collection);
 
-    super.forEach(fn);
+    this.vals.forEach(fn);
   }
 
-  get size() {
-    consumeCollection(this);
+  get size(): number {
+    getValue(this.collection);
 
-    return super.size;
+    return this.vals.size;
+  }
+
+  [Symbol.iterator](): IterableIterator<[K, V]> {
+    getValue(this.collection);
+
+    return this.vals[Symbol.iterator]();
+  }
+
+  get [Symbol.toStringTag](): string {
+    return this.vals[Symbol.toStringTag];
   }
 
   // **** KEY SETTERS ****
-  set(key: K, value: V) {
-    dirtyKey(this, key);
-    dirtyCollection(this);
+  set(key: K, value: V): this {
+    this.dirtyStorageFor(key);
+    setValue(this.collection, null);
 
-    return super.set(key, value);
+    this.vals.set(key, value);
+
+    return this;
   }
 
-  delete(key: K) {
-    dirtyKey(this, key);
-    dirtyCollection(this);
+  delete(key: K): boolean {
+    this.dirtyStorageFor(key);
+    setValue(this.collection, null);
 
-    return super.delete(key);
+    return this.vals.delete(key);
   }
 
   // **** ALL SETTERS ****
-  clear() {
-    super.forEach((_v, k) => dirtyKey(this, k));
-    dirtyCollection(this);
+  clear(): void {
+    this.storages.forEach((s) => setValue(s, null));
+    setValue(this.collection, null);
 
-    return super.clear();
+    this.vals.clear();
   }
 }
 
-if (typeof Symbol !== undefined) {
-  let originalIterator = TrackedMap.prototype[Symbol.iterator];
+// So instanceof works
+Object.setPrototypeOf(TrackedMap, Map.prototype);
 
-  Object.defineProperty(TrackedMap.prototype, Symbol.iterator, {
-    get() {
-      consumeCollection(this);
-      return originalIterator;
+export class TrackedWeakMap<
+  K extends object = object,
+  V = unknown
+> implements WeakMap<K, V> {
+  private storages: WeakMap<K, TrackedStorage<null>> = new WeakMap();
+
+  private vals: WeakMap<K, V>;
+
+  private readStorageFor(key: K): void {
+    const { storages } = this;
+    let storage = storages.get(key);
+
+    if (storage === undefined) {
+      storage = createStorage(null, () => false);
+      storages.set(key, storage);
     }
-  });
+
+    getValue(storage);
+  }
+
+  private dirtyStorageFor(key: K): void {
+    const storage = this.storages.get(key);
+
+    if (storage) {
+      setValue(storage, null);
+    }
+  }
+
+  constructor(iterable?: (readonly [K, V][] | null)) {
+    this.vals = new WeakMap(iterable);
+  }
+
+  get(key: K): V | undefined {
+    this.readStorageFor(key);
+
+    return this.vals.get(key);
+  }
+
+  has(key: K): boolean {
+    this.readStorageFor(key);
+
+    return this.vals.has(key);
+  }
+
+  set(key: K, value: V): this {
+    this.dirtyStorageFor(key);
+
+    this.vals.set(key, value);
+
+    return this;
+  }
+
+  delete(key: K): boolean {
+    this.dirtyStorageFor(key);
+
+    return this.vals.delete(key);
+  }
+
+  get [Symbol.toStringTag](): string {
+    return this.vals[Symbol.toStringTag];
+  }
 }
 
-export class TrackedWeakMap<K extends object = object, V = unknown> extends WeakMap<
-  K,
-  V
-> {
-  get(key: K) {
-    consumeKey(this, key);
-
-    return super.get(key);
-  }
-
-  has(key: K) {
-    consumeKey(this, key);
-
-    return super.has(key);
-  }
-
-  set(key: K, value: V) {
-    dirtyKey(this, key);
-
-    return super.set(key, value);
-  }
-
-  delete(key: K) {
-    dirtyKey(this, key);
-
-    return super.delete(key);
-  }
-}
+// So instanceof works
+Object.setPrototypeOf(TrackedWeakMap, WeakMap.prototype);
