@@ -36,6 +36,7 @@
     "@ember/test-helpers": "^2.3.0",
     "@glimmer/tracking": "^1.0.0",
     "ember-cli-babel": "^7.26.5",
+    "ember-tracked-storage-polyfill": "1.0.0",
     "qunit": "^2.16.0"
   },
   "devDependencies": {
@@ -65,7 +66,6 @@
     "ember-resolver": "^8.0.2",
     "ember-source": "~3.28.0",
     "ember-source-channel-url": "^3.0.0",
-    "ember-tracked-storage-polyfill": "1.0.0",
     "ember-try": "^1.4.0",
     "ember-welcome-page": "^4.0.0",
     "eslint": "^7.0.0",
