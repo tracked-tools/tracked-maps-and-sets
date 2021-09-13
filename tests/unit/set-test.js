@@ -14,6 +14,7 @@ module('TrackedSet', function(hooks) {
 
     assert.equal(set.has('foo'), true);
     assert.equal(set.size, 2);
+    assert.ok(set instanceof Set);
   });
 
   test('works with all kinds of values', assert => {

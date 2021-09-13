@@ -13,6 +13,7 @@ module('TrackedWeakMap', function(hooks) {
     let map = new TrackedWeakMap([[obj, 123]]);
 
     assert.equal(map.get(obj), 123);
+    assert.ok(map instanceof WeakMap);
   });
 
   test('does not work with built-ins', assert => {
