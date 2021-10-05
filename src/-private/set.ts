@@ -112,7 +112,6 @@ export class TrackedSet<T = unknown> implements Set<T> {
 
 // So instanceof works
 Object.setPrototypeOf(TrackedSet.prototype, Set.prototype);
-// Object.setPrototypeOf(TrackedSet, Set.prototype);
 
 export class TrackedWeakSet<T extends object = object> implements WeakSet<T> {
   private storages: WeakMap<T, TrackedStorage<null>> = new WeakMap();
@@ -171,4 +170,3 @@ export class TrackedWeakSet<T extends object = object> implements WeakSet<T> {
 
 // So instanceof works
 Object.setPrototypeOf(TrackedWeakSet.prototype, WeakSet.prototype);
-// Object.setPrototypeOf(TrackedWeakSet, WeakSet.prototype);
