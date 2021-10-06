@@ -1,9 +1,7 @@
 tracked-maps-and-sets
 ==============================================================================
 
-> **IMPORTANT: This addon supports IE 11 or older browsers. If you
-> don't need to support them, consider using [tracked-built-ins](https://github.com/pzuraq/tracked-built-ins)
-> instead.**
+**Note:** This addon supports IE 11 or older browsers. If you don't need to support them, you may find [tracked-built-ins](https://github.com/pzuraq/tracked-built-ins) valuable as well: it adds support for the *other* standard collection types in JavaScript: objects and arrays.
 
 This addon provides tracked versions of JavaScript's Maps and Sets:
 
