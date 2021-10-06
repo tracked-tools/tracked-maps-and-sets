@@ -118,7 +118,7 @@ export class TrackedMap<K = unknown, V = unknown> implements Map<K, V> {
 }
 
 // So instanceof works
-Object.setPrototypeOf(TrackedMap, Map.prototype);
+Object.setPrototypeOf(TrackedMap.prototype, Map.prototype);
 
 export class TrackedWeakMap<
   K extends object = object,
@@ -184,4 +184,4 @@ export class TrackedWeakMap<
 }
 
 // So instanceof works
-Object.setPrototypeOf(TrackedWeakMap, WeakMap.prototype);
+Object.setPrototypeOf(TrackedWeakMap.prototype, WeakMap.prototype);

@@ -14,6 +14,7 @@ module('TrackedMap', function(hooks) {
 
     assert.equal(map.get('foo'), 123);
     assert.equal(map.size, 1);
+    assert.ok(map instanceof Map);
   });
 
   test('works with all kinds of keys', assert => {

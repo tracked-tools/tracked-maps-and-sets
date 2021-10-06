@@ -13,6 +13,7 @@ module('TrackedWeakSet', function(hooks) {
     let set = new TrackedWeakSet([obj]);
 
     assert.equal(set.has(obj), true);
+    assert.ok(set instanceof WeakSet);
   });
 
   test('does not work with built-ins', assert => {
