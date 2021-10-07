@@ -998,7 +998,7 @@
     mkdirp "^1.0.4"
     silent-error "^1.1.1"
 
-"@ember/test-helpers@^2.3.0":
+"@ember/test-helpers@^2.5.0":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@ember/test-helpers/-/test-helpers-2.5.0.tgz#1503e4fdf12451d591e41f69d0b2c1db8a431017"
   integrity sha512-7zDhA8KzU42R9J5+SrWncMA7C/v15e7JM9wfE2woktyR4AlVBP47qiphbJ8EhhWzE12wioY7cb5/Qw+RwgGEiQ==
@@ -10251,7 +10251,7 @@ qunit-dom@^2.0.0:
     ember-cli-babel "^7.23.0"
     ember-cli-version-checker "^5.1.1"
 
-qunit@^2.16.0:
+qunit@^2.17.2:
   version "2.17.2"
   resolved "https://registry.yarnpkg.com/qunit/-/qunit-2.17.2.tgz#5cb278e131d931f25c109a0fdb0518be7754c25a"
   integrity sha512-17isVvuOmALzsPjiV7wFg/6O5vJYXBrQZPwocfQSSh0I/rXvfX7bKMFJ4GMVW3U4P8r2mBeUy8EAngti4QD2Vw==
