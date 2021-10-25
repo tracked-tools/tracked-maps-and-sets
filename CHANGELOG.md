@@ -1,3 +1,25 @@
+
+## v3.0.2 (2021-10-25)
+
+#### :rocket: Enhancement
+* [#122](https://github.com/tracked-tools/tracked-maps-and-sets/pull/122) Add support for TypeScript 4.4 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### :bug: Bug Fix
+* [#165](https://github.com/tracked-tools/tracked-maps-and-sets/pull/165) Fix: accept Iterable in TrackedMap and TrackedSet ([@chriskrycho](https://github.com/chriskrycho))
+* [#137](https://github.com/tracked-tools/tracked-maps-and-sets/pull/137) Fix incorrect prototype chain to make instanceof work ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :memo: Documentation
+* [#145](https://github.com/tracked-tools/tracked-maps-and-sets/pull/145) remove highlight.js deprecation warning in changelog ([@jelhan](https://github.com/jelhan))
+* [#144](https://github.com/tracked-tools/tracked-maps-and-sets/pull/144) Add note about tracked-built-ins addon ([@SergeAstapov](https://github.com/SergeAstapov))
+* [#117](https://github.com/tracked-tools/tracked-maps-and-sets/pull/117) Update Compatibility in Readme ([@simonihmig](https://github.com/simonihmig))
+
+#### Committers: 5
+- Chris Krycho ([@chriskrycho](https://github.com/chriskrycho))
+- Jeldrik Hanschke ([@jelhan](https://github.com/jelhan))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+- Simon Ihmig ([@simonihmig](https://github.com/simonihmig))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## v3.0.0 (2021-08-03)
 
 #### :boom: Breaking Change
