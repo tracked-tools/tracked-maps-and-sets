@@ -1,15 +1,10 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "module": "es2015",
     "allowJs": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
+    "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -18,9 +13,14 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "experimentalDecorators": true,
-    "outDir": "addon"
+    "outDir": "addon",
+    "baseUrl": ".",
+    "paths": {
+      "dummy/tests/*": ["tests/*"],
+      "dummy/config/*": ["tests/dummy/config/*"],
+      "dummy/*": ["tests/dummy/app/*"],
+      "tracked-maps-and-sets": ["src"]
+    }
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*", "tests/**/*"]
 }

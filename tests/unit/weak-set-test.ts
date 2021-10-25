@@ -9,33 +9,42 @@ module('TrackedWeakSet', function(hooks) {
   setupRenderingTest(hooks);
 
   test('constructor', assert => {
-    let obj = {};
-    let set = new TrackedWeakSet([obj]);
+    const obj = {};
+    const set = new TrackedWeakSet([obj]);
 
     assert.equal(set.has(obj), true);
     assert.ok(set instanceof WeakSet);
+
+    const array = [1, 2, 3];
+    const iterable = [array];
+    const fromIterable = new TrackedWeakSet(iterable);
+    assert.equal(fromIterable.has(array), true);
   });
 
   test('does not work with built-ins', assert => {
-    let set = new TrackedWeakSet();
+    const set = new TrackedWeakSet();
 
+    // @ts-expect-error -- point is testing constructor error
     assert.throws(() => set.add('aoeu'), /Invalid value used in weak set/);
+    // @ts-expect-error -- point is testing constructor error
     assert.throws(() => set.add(true), /Invalid value used in weak set/);
+    // @ts-expect-error -- point is testing constructor error
     assert.throws(() => set.add(123), /Invalid value used in weak set/);
+    // @ts-expect-error -- point is testing constructor error
     assert.throws(() => set.add(undefined), /Invalid value used in weak set/);
   });
 
   test('add/has', assert => {
-    let obj = {};
-    let set = new TrackedWeakSet();
+    const obj = {};
+    const set = new TrackedWeakSet();
 
     set.add(obj);
     assert.equal(set.has(obj), true);
   });
 
   test('delete', assert => {
-    let obj = {};
-    let set = new TrackedWeakSet();
+    const obj = {};
+    const set = new TrackedWeakSet();
 
     assert.equal(set.has(obj), false);
 

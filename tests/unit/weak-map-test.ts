@@ -9,37 +9,41 @@ module('TrackedWeakMap', function(hooks) {
   setupRenderingTest(hooks);
 
   test('constructor', assert => {
-    let obj = {};
-    let map = new TrackedWeakMap([[obj, 123]]);
+    const obj = {};
+    const map = new TrackedWeakMap([[obj, 123]]);
 
     assert.equal(map.get(obj), 123);
     assert.ok(map instanceof WeakMap);
   });
 
   test('does not work with built-ins', assert => {
-    let map = new TrackedWeakMap();
+    const map = new TrackedWeakMap();
 
     assert.throws(
+      // @ts-expect-error -- point is testing constructor error
       () => map.set('aoeu', 123),
       /Invalid value used as weak map key/
     );
     assert.throws(
+      // @ts-expect-error -- point is testing constructor error
       () => map.set(true, 123),
       /Invalid value used as weak map key/
     );
     assert.throws(
+      // @ts-expect-error -- point is testing constructor error
       () => map.set(123, 123),
       /Invalid value used as weak map key/
     );
     assert.throws(
+      // @ts-expect-error -- point is testing constructor error
       () => map.set(undefined, 123),
       /Invalid value used as weak map key/
     );
   });
 
   test('get/set', assert => {
-    let obj = {};
-    let map = new TrackedWeakMap();
+    const obj = {};
+    const map = new TrackedWeakMap();
 
     map.set(obj, 123);
     assert.equal(map.get(obj), 123);
@@ -49,8 +53,8 @@ module('TrackedWeakMap', function(hooks) {
   });
 
   test('has', assert => {
-    let obj = {};
-    let map = new TrackedWeakMap();
+    const obj = {};
+    const map = new TrackedWeakMap();
 
     assert.equal(map.has(obj), false);
     map.set(obj, 123);
@@ -58,8 +62,8 @@ module('TrackedWeakMap', function(hooks) {
   });
 
   test('delete', assert => {
-    let obj = {};
-    let map = new TrackedWeakMap();
+    const obj = {};
+    const map = new TrackedWeakMap();
 
     assert.equal(map.has(obj), false);
 

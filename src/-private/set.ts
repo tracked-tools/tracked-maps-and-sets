@@ -32,8 +32,11 @@ export class TrackedSet<T = unknown> implements Set<T> {
     }
   }
 
-  constructor(values?: readonly T[] | null) {
-    this.vals = new Set(values);
+  constructor();
+  constructor(values: readonly T[] | null);
+  constructor(iterable: Iterable<T>);
+  constructor(existing?: readonly T[] | Iterable<T> | null | undefined) {
+    this.vals = new Set(existing);
   }
 
   // **** KEY GETTERS ****
@@ -45,31 +48,31 @@ export class TrackedSet<T = unknown> implements Set<T> {
 
   // **** ALL GETTERS ****
   entries(): IterableIterator<[T, T]> {
-    getValue(this.collection)
+    getValue(this.collection);
 
     return this.vals.entries();
   }
 
   keys(): IterableIterator<T> {
-    getValue(this.collection)
+    getValue(this.collection);
 
     return this.vals.keys();
   }
 
   values(): IterableIterator<T> {
-    getValue(this.collection)
+    getValue(this.collection);
 
     return this.vals.values();
   }
 
   forEach(fn: (value1: T, value2: T, set: Set<T>) => void): void {
-    getValue(this.collection)
+    getValue(this.collection);
 
     this.vals.forEach(fn);
   }
 
   get size(): number {
-    getValue(this.collection)
+    getValue(this.collection);
 
     return this.vals.size;
   }
@@ -86,7 +89,7 @@ export class TrackedSet<T = unknown> implements Set<T> {
 
   // **** KEY SETTERS ****
   add(value: T): this {
-    this.dirtyStorageFor(value)
+    this.dirtyStorageFor(value);
     setValue(this.collection, null);
 
     this.vals.add(value);

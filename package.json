@@ -21,7 +21,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build:ts": "tsc && tsc --declaration --outDir commonjs --module CommonJS",
+    "build:ts": "tsc --project config/tsconfig.addon.json && tsc --project config/tsconfig.cjs.json",
     "build": "ember build --environment=production",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel 'lint:!(fix)'",
     "lint:hbs": "ember-template-lint .",
@@ -43,6 +43,7 @@
     "@glimmer/component": "^1.0.0",
     "@types/ember": "^3.16.5",
     "@types/ember-qunit": "^3.4.13",
+    "@types/ember-resolver": "^5.0.10",
     "@types/ember__test-helpers": "^2.0.0",
     "@types/qunit": "^2.11.1",
     "@types/rsvp": "^4.0.3",
@@ -70,6 +71,7 @@
     "eslint": "^7.0.0",
     "eslint-plugin-ember": "^10.4.1",
     "eslint-plugin-node": "^11.0.0",
+    "expect-type": "^0.13.0",
     "loader.js": "^4.7.0",
     "npm-run-all": "^4.1.5",
     "qunit": "^2.17.2",

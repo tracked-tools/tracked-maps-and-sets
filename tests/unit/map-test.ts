@@ -3,14 +3,19 @@ import { TrackedMap } from 'tracked-maps-and-sets';
 
 import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
+import { expectTypeOf } from 'expect-type';
+
 import { reactivityTest } from '../helpers/reactivity';
 import { eachReactivityTest, eachInReactivityTest } from '../helpers/collection-reactivity';
+
+expectTypeOf<TrackedMap<string, number>>().toMatchTypeOf<Map<string, number>>();
+expectTypeOf<Map<string, number>>().not.toMatchTypeOf<TrackedMap<string, number>>();
 
 module('TrackedMap', function(hooks) {
   setupRenderingTest(hooks);
 
   test('constructor', assert => {
-    let map = new TrackedMap([['foo', 123]]);
+    const map = new TrackedMap([['foo', 123]]);
 
     assert.equal(map.get('foo'), 123);
     assert.equal(map.size, 1);
@@ -18,10 +23,10 @@ module('TrackedMap', function(hooks) {
   });
 
   test('works with all kinds of keys', assert => {
-    let map = new TrackedMap([
+    const map = new TrackedMap<unknown, unknown>([
       ['foo', 123],
       [{}, {}],
-      [() => {}, 'bar'],
+      [() => {/* no op! */}, 'bar'],
       [123, true],
       [true, false],
       [null, null],
@@ -31,7 +36,7 @@ module('TrackedMap', function(hooks) {
   });
 
   test('get/set', assert => {
-    let map = new TrackedMap();
+    const map = new TrackedMap();
 
     map.set('foo', 123);
     assert.equal(map.get('foo'), 123);
@@ -41,7 +46,7 @@ module('TrackedMap', function(hooks) {
   });
 
   test('has', assert => {
-    let map = new TrackedMap();
+    const map = new TrackedMap();
 
     assert.equal(map.has('foo'), false);
     map.set('foo', 123);
@@ -49,12 +54,12 @@ module('TrackedMap', function(hooks) {
   });
 
   test('entries', assert => {
-    let map = new TrackedMap();
+    const map = new TrackedMap();
     map.set(0, 1);
     map.set(1, 2);
     map.set(2, 3);
 
-    let iter = map.entries();
+    const iter = map.entries();
 
     assert.deepEqual(iter.next().value, [0, 1]);
     assert.deepEqual(iter.next().value, [1, 2]);
@@ -63,12 +68,12 @@ module('TrackedMap', function(hooks) {
   });
 
   test('keys', assert => {
-    let map = new TrackedMap();
+    const map = new TrackedMap();
     map.set(0, 1);
     map.set(1, 2);
     map.set(2, 3);
 
-    let iter = map.keys();
+    const iter = map.keys();
 
     assert.equal(iter.next().value, 0);
     assert.equal(iter.next().value, 1);
@@ -77,12 +82,12 @@ module('TrackedMap', function(hooks) {
   });
 
   test('values', assert => {
-    let map = new TrackedMap();
+    const map = new TrackedMap();
     map.set(0, 1);
     map.set(1, 2);
     map.set(2, 3);
 
-    let iter = map.values();
+    const iter = map.values();
 
     assert.equal(iter.next().value, 1);
     assert.equal(iter.next().value, 2);
@@ -91,7 +96,7 @@ module('TrackedMap', function(hooks) {
   });
 
   test('forEach', assert => {
-    let map = new TrackedMap();
+    const map = new TrackedMap();
     map.set(0, 1);
     map.set(1, 2);
     map.set(2, 3);
@@ -110,7 +115,7 @@ module('TrackedMap', function(hooks) {
   });
 
   test('size', assert => {
-    let map = new TrackedMap();
+    const map = new TrackedMap();
     assert.equal(map.size, 0);
 
     map.set(0, 1);
@@ -127,7 +132,7 @@ module('TrackedMap', function(hooks) {
   });
 
   test('delete', assert => {
-    let map = new TrackedMap();
+    const map = new TrackedMap();
 
     assert.equal(map.has(0), false);
 
@@ -139,7 +144,7 @@ module('TrackedMap', function(hooks) {
   });
 
   test('clear', assert => {
-    let map = new TrackedMap();
+    const map = new TrackedMap();
 
     map.set(0, 1);
     map.set(1, 2);
@@ -263,7 +268,7 @@ module('TrackedMap', function(hooks) {
       map = new TrackedMap();
 
       get value() {
-        this.map.forEach(() => {});
+        this.map.forEach(() => {/* no op! */});
         return 'test';
       }
 

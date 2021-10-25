@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  // From root of repo, *not* from directory where this tsconfig is located
+  "include": ["../src"],
+  "compilerOptions": {
+    "outDir": "../addon",
+    "module": "ES2015"
+  }
+}
