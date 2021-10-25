@@ -3,40 +3,69 @@ import { TrackedSet } from 'tracked-maps-and-sets';
 
 import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
+import { expectTypeOf } from 'expect-type';
+
 import { reactivityTest } from '../helpers/reactivity';
 import { eachReactivityTest } from '../helpers/collection-reactivity';
+
+expectTypeOf<TrackedSet<string>>().toMatchTypeOf<Set<string>>();
+expectTypeOf<Set<string>>().not.toEqualTypeOf<TrackedSet<string>>();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyFn = (...args: any[]) => any;
 
 module('TrackedSet', function(hooks) {
   setupRenderingTest(hooks);
 
   test('constructor', assert => {
-    let set = new TrackedSet(['foo', 123]);
+    const set = new TrackedSet(['foo', 123]);
 
     assert.equal(set.has('foo'), true);
     assert.equal(set.size, 2);
     assert.ok(set instanceof Set);
+
+    const setFromSet = new TrackedSet(set);
+    assert.equal(setFromSet.has('foo'), true);
+    assert.equal(setFromSet.size, 2);
+    assert.ok(setFromSet instanceof Set);
+
+    const setFromEmpty = new TrackedSet();
+    assert.equal(setFromEmpty.has('anything'), false);
+    assert.equal(setFromEmpty.size, 0);
+    assert.ok(setFromEmpty instanceof Set);
   });
 
   test('works with all kinds of values', assert => {
-    let set = new TrackedSet(['foo', {}, () => {}, 123, true, null]);
+    const set = new TrackedSet<
+      string | Record<PropertyKey, unknown> | AnyFn | number | boolean | null
+    >([
+      'foo',
+      {},
+      () => {
+        /* no op */
+      },
+      123,
+      true,
+      null,
+    ]);
 
     assert.equal(set.size, 6);
   });
 
   test('add/has', assert => {
-    let set = new TrackedSet();
+    const set = new TrackedSet();
 
     set.add('foo');
     assert.equal(set.has('foo'), true);
   });
 
   test('entries', assert => {
-    let set = new TrackedSet();
+    const set = new TrackedSet();
     set.add(0);
     set.add(2);
     set.add(1);
 
-    let iter = set.entries();
+    const iter = set.entries();
 
     assert.deepEqual(iter.next().value, [0, 0]);
     assert.deepEqual(iter.next().value, [2, 2]);
@@ -45,12 +74,12 @@ module('TrackedSet', function(hooks) {
   });
 
   test('keys', assert => {
-    let set = new TrackedSet();
+    const set = new TrackedSet();
     set.add(0);
     set.add(2);
     set.add(1);
 
-    let iter = set.keys();
+    const iter = set.keys();
 
     assert.equal(iter.next().value, 0);
     assert.equal(iter.next().value, 2);
@@ -59,12 +88,12 @@ module('TrackedSet', function(hooks) {
   });
 
   test('values', assert => {
-    let set = new TrackedSet();
+    const set = new TrackedSet();
     set.add(0);
     set.add(2);
     set.add(1);
 
-    let iter = set.values();
+    const iter = set.values();
 
     assert.equal(iter.next().value, 0);
     assert.equal(iter.next().value, 2);
@@ -73,7 +102,7 @@ module('TrackedSet', function(hooks) {
   });
 
   test('forEach', assert => {
-    let set = new TrackedSet();
+    const set = new TrackedSet();
     set.add(0);
     set.add(1);
     set.add(2);
@@ -92,7 +121,7 @@ module('TrackedSet', function(hooks) {
   });
 
   test('size', assert => {
-    let set = new TrackedSet();
+    const set = new TrackedSet();
     assert.equal(set.size, 0);
 
     set.add(0);
@@ -109,7 +138,7 @@ module('TrackedSet', function(hooks) {
   });
 
   test('delete', assert => {
-    let set = new TrackedSet();
+    const set = new TrackedSet();
 
     assert.equal(set.has(0), false);
 
@@ -121,7 +150,7 @@ module('TrackedSet', function(hooks) {
   });
 
   test('clear', assert => {
-    let set = new TrackedSet();
+    const set = new TrackedSet();
 
     set.add(0);
     set.add(1);
@@ -230,7 +259,7 @@ module('TrackedSet', function(hooks) {
       set = new TrackedSet();
 
       get value() {
-        this.set.forEach(() => {});
+        this.set.forEach(() => {/* no-op */});
         return 'test';
       }
 

@@ -32,8 +32,19 @@ export class TrackedMap<K = unknown, V = unknown> implements Map<K, V> {
     }
   }
 
-  constructor(entries?: readonly (readonly [K, V])[] | null) {
-    this.vals = new Map(entries);
+  constructor();
+  constructor(entries: readonly (readonly [K, V])[] | null);
+  constructor(iterable: Iterable<readonly [K, V]>);
+  constructor(
+    existing?:
+      | readonly (readonly [K, V])[]
+      | Iterable<readonly [K, V]>
+      | null
+      | undefined
+  ) {
+    // TypeScript doesn't correctly resolve the overloads for calling the `Map`
+    // constructor for the no-value constructor. This resolves that.
+    this.vals = existing ? new Map(existing) : new Map();
   }
 
   // **** KEY GETTERS ****
@@ -120,10 +131,9 @@ export class TrackedMap<K = unknown, V = unknown> implements Map<K, V> {
 // So instanceof works
 Object.setPrototypeOf(TrackedMap.prototype, Map.prototype);
 
-export class TrackedWeakMap<
-  K extends object = object,
-  V = unknown
-> implements WeakMap<K, V> {
+export class TrackedWeakMap<K extends object = object, V = unknown>
+  implements WeakMap<K, V>
+{
   private storages: WeakMap<K, TrackedStorage<null>> = new WeakMap();
 
   private vals: WeakMap<K, V>;
@@ -148,8 +158,15 @@ export class TrackedWeakMap<
     }
   }
 
-  constructor(iterable?: (readonly [K, V][] | null)) {
-    this.vals = new WeakMap(iterable);
+  constructor();
+  constructor(iterable: Iterable<readonly [K, V]>);
+  constructor(entries: readonly [K, V][] | null);
+  constructor(
+    existing?: readonly [K, V][] | Iterable<readonly [K, V]> | null | undefined
+  ) {
+    // TypeScript doesn't correctly resolve the overloads for calling the `Map`
+    // constructor for the no-value constructor. This resolves that.
+    this.vals = existing ? new WeakMap(existing) : new WeakMap();
   }
 
   get(key: K): V | undefined {
