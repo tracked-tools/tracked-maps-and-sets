@@ -23,17 +23,21 @@
   "scripts": {
     "build:ts": "tsc --project config/tsconfig.addon.json && tsc --project config/tsconfig.cjs.json",
     "build": "ember build --environment=production",
-    "lint": "npm-run-all --aggregate-output --continue-on-error --parallel 'lint:!(fix)'",
+    "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
+    "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*:fix",
     "lint:hbs": "ember-template-lint .",
-    "lint:js": "eslint .",
+    "lint:hbs:fix": "ember-template-lint . --fix",
+    "lint:js": "eslint . --cache",
     "lint:ts": "tsc --noEmit",
+    "lint:js:fix": "eslint . --fix",
     "start": "ember serve",
     "test": "yarn build:ts && ember test",
-    "test:all": "ember try:each",
+    "test:ember": "ember test",
+    "test:ember-compatibility": "ember try:each",
     "prepare": "yarn build:ts"
   },
   "dependencies": {
-    "@glimmer/tracking": "^1.0.0",
+    "@glimmer/tracking": "^1.0.4",
     "ember-cli-babel": "^7.26.6",
     "ember-cli-typescript": "^4.2.1",
     "ember-tracked-storage-polyfill": "1.0.0"
@@ -41,7 +45,8 @@
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.5.0",
-    "@glimmer/component": "^1.0.0",
+    "@embroider/test-setup": "^0.47.1",
+    "@glimmer/component": "^1.0.4",
     "@types/ember": "^3.16.5",
     "@types/ember-qunit": "^3.4.13",
     "@types/ember-resolver": "^5.0.10",
@@ -52,15 +57,15 @@
     "@typescript-eslint/parser": "^4.23.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-auto-import": "^2.2.0",
-    "ember-cli": "~3.28.0",
+    "ember-cli": "~3.28.3",
     "ember-cli-dependency-checker": "^3.2.0",
-    "ember-cli-htmlbars": "^5.3.1",
-    "ember-cli-inject-live-reload": "^2.0.2",
+    "ember-cli-htmlbars": "^5.7.1",
+    "ember-cli-inject-live-reload": "^2.1.0",
     "ember-cli-sri": "^2.1.1",
-    "ember-cli-uglify": "^3.0.0",
+    "ember-cli-terser": "^4.0.2",
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-export-application-global": "^2.0.1",
-    "ember-load-initializers": "^2.1.1",
+    "ember-load-initializers": "^2.1.2",
     "ember-maybe-import-regenerator": "^1.0.0",
     "ember-qunit": "^5.1.4",
     "ember-resolver": "^8.0.2",
@@ -68,9 +73,9 @@
     "ember-source-channel-url": "^3.0.0",
     "ember-template-lint": "^3.10.0",
     "ember-try": "^1.4.0",
-    "eslint": "^7.0.0",
-    "eslint-plugin-ember": "^10.4.1",
-    "eslint-plugin-node": "^11.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-ember": "^10.5.4",
+    "eslint-plugin-node": "^11.1.0",
     "expect-type": "^0.13.0",
     "loader.js": "^4.7.0",
     "npm-run-all": "^4.1.5",
@@ -82,7 +87,7 @@
     "webpack": "^5.55.1"
   },
   "engines": {
-    "node": "12.* || >= 14"
+    "node": "12.* || 14.* || >= 16"
   },
   "ember": {
     "edition": "octane"

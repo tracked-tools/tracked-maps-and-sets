@@ -1,6 +1,7 @@
 'use strict';
 
 const getChannelURL = require('ember-source-channel-url');
+const { embroiderSafe, embroiderOptimized } = require('@embroider/test-setup');
 
 const typeTests = require('./ember-try-typescript');
 
@@ -45,16 +46,6 @@ module.exports = async function () {
           },
         },
       },
-      // The default `.travis.yml` runs this scenario via `yarn test`,
-      // not via `ember try`. It's still included here so that running
-      // `ember try:each` manually or from a customized CI config will run it
-      // along with all the other scenarios.
-      {
-        name: 'ember-default',
-        npm: {
-          devDependencies: {},
-        },
-      },
       {
         name: 'ember-default-with-jquery',
         env: {
@@ -64,7 +55,7 @@ module.exports = async function () {
         },
         npm: {
           devDependencies: {
-            '@ember/jquery': '^0.5.1',
+            '@ember/jquery': '^1.1.0',
           },
         },
       },
@@ -78,11 +69,16 @@ module.exports = async function () {
           }),
         },
         npm: {
+          devDependencies: {
+            'ember-source': '~3.28.0',
+          },
           ember: {
             edition: 'classic',
           },
         },
       },
+      embroiderSafe(),
+      embroiderOptimized(),
 
       // Include the type tests, while still leaving them in their own file so
       // they can be run independently, for example to run all the type tests but
