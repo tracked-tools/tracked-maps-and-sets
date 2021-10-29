@@ -5,10 +5,10 @@ import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 import { reactivityTest } from '../helpers/reactivity';
 
-module('TrackedWeakMap', function(hooks) {
+module('TrackedWeakMap', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('constructor', assert => {
+  test('constructor', (assert) => {
     const obj = {};
     const map = new TrackedWeakMap([[obj, 123]]);
 
@@ -16,7 +16,7 @@ module('TrackedWeakMap', function(hooks) {
     assert.ok(map instanceof WeakMap);
   });
 
-  test('does not work with built-ins', assert => {
+  test('does not work with built-ins', (assert) => {
     const map = new TrackedWeakMap();
 
     assert.throws(
@@ -41,7 +41,7 @@ module('TrackedWeakMap', function(hooks) {
     );
   });
 
-  test('get/set', assert => {
+  test('get/set', (assert) => {
     const obj = {};
     const map = new TrackedWeakMap();
 
@@ -52,7 +52,7 @@ module('TrackedWeakMap', function(hooks) {
     assert.equal(map.get(obj), 456);
   });
 
-  test('has', assert => {
+  test('has', (assert) => {
     const obj = {};
     const map = new TrackedWeakMap();
 
@@ -61,7 +61,7 @@ module('TrackedWeakMap', function(hooks) {
     assert.equal(map.has(obj), true);
   });
 
-  test('delete', assert => {
+  test('delete', (assert) => {
     const obj = {};
     const map = new TrackedWeakMap();
 
@@ -161,7 +161,10 @@ module('TrackedWeakMap', function(hooks) {
     class extends Component {
       obj = {};
       obj2 = {};
-      map = new TrackedWeakMap([[this.obj, 123], [this.obj2, 456]]);
+      map = new TrackedWeakMap([
+        [this.obj, 123],
+        [this.obj2, 456],
+      ]);
 
       get value() {
         return this.map.get(this.obj);

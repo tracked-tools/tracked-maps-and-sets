@@ -5,10 +5,10 @@ import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 import { reactivityTest } from '../helpers/reactivity';
 
-module('TrackedWeakSet', function(hooks) {
+module('TrackedWeakSet', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('constructor', assert => {
+  test('constructor', (assert) => {
     const obj = {};
     const set = new TrackedWeakSet([obj]);
 
@@ -21,7 +21,7 @@ module('TrackedWeakSet', function(hooks) {
     assert.equal(fromIterable.has(array), true);
   });
 
-  test('does not work with built-ins', assert => {
+  test('does not work with built-ins', (assert) => {
     const set = new TrackedWeakSet();
 
     // @ts-expect-error -- point is testing constructor error
@@ -34,7 +34,7 @@ module('TrackedWeakSet', function(hooks) {
     assert.throws(() => set.add(undefined), /Invalid value used in weak set/);
   });
 
-  test('add/has', assert => {
+  test('add/has', (assert) => {
     const obj = {};
     const set = new TrackedWeakSet();
 
@@ -42,7 +42,7 @@ module('TrackedWeakSet', function(hooks) {
     assert.equal(set.has(obj), true);
   });
 
-  test('delete', assert => {
+  test('delete', (assert) => {
     const obj = {};
     const set = new TrackedWeakSet();
 
