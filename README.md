@@ -1,4 +1,4 @@
-tracked-maps-and-sets
+tracked-maps-and-sets [![GitHub Actions Build Status](https://github.com/tracked-tools/tracked-maps-and-sets/workflows/CI/badge.svg)](https://github.com/tracked-tools/tracked-maps-and-sets/actions/workflows/CI.yml?query=branch%3Amaster)
 ==============================================================================
 
 **Note:** This addon supports IE 11 or older browsers. If you don't need to support them, you may find [tracked-built-ins](https://github.com/pzuraq/tracked-built-ins) valuable as well: it adds support for the *other* standard collection types in JavaScript: objects and arrays.
