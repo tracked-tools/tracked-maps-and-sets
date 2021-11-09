@@ -14,6 +14,7 @@
 /.eslintignore
 /.eslintrc.js
 /.git/
+/.github/
 /.gitignore
 /.prettierignore
 /.prettierrc.js
@@ -24,6 +25,7 @@
 /config/ember-try.js
 /CONTRIBUTING.md
 /ember-cli-build.js
+/RELEASE.md
 /testem.js
 /tests/
 /yarn-error.log
