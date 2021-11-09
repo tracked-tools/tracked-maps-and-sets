@@ -6,15 +6,20 @@ import { module, test } from 'qunit';
 import { expectTypeOf } from 'expect-type';
 
 import { reactivityTest } from '../helpers/reactivity';
-import { eachReactivityTest, eachInReactivityTest } from '../helpers/collection-reactivity';
+import {
+  eachReactivityTest,
+  eachInReactivityTest,
+} from '../helpers/collection-reactivity';
 
 expectTypeOf<TrackedMap<string, number>>().toMatchTypeOf<Map<string, number>>();
-expectTypeOf<Map<string, number>>().not.toMatchTypeOf<TrackedMap<string, number>>();
+expectTypeOf<Map<string, number>>().not.toMatchTypeOf<
+  TrackedMap<string, number>
+>();
 
-module('TrackedMap', function(hooks) {
+module('TrackedMap', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('constructor', assert => {
+  test('constructor', (assert) => {
     const map = new TrackedMap([['foo', 123]]);
 
     assert.equal(map.get('foo'), 123);
@@ -22,11 +27,16 @@ module('TrackedMap', function(hooks) {
     assert.ok(map instanceof Map);
   });
 
-  test('works with all kinds of keys', assert => {
+  test('works with all kinds of keys', (assert) => {
     const map = new TrackedMap<unknown, unknown>([
       ['foo', 123],
       [{}, {}],
-      [() => {/* no op! */}, 'bar'],
+      [
+        () => {
+          /* no op! */
+        },
+        'bar',
+      ],
       [123, true],
       [true, false],
       [null, null],
@@ -35,7 +45,7 @@ module('TrackedMap', function(hooks) {
     assert.equal(map.size, 6);
   });
 
-  test('get/set', assert => {
+  test('get/set', (assert) => {
     const map = new TrackedMap();
 
     map.set('foo', 123);
@@ -45,7 +55,7 @@ module('TrackedMap', function(hooks) {
     assert.equal(map.get('foo'), 456);
   });
 
-  test('has', assert => {
+  test('has', (assert) => {
     const map = new TrackedMap();
 
     assert.equal(map.has('foo'), false);
@@ -53,7 +63,7 @@ module('TrackedMap', function(hooks) {
     assert.equal(map.has('foo'), true);
   });
 
-  test('entries', assert => {
+  test('entries', (assert) => {
     const map = new TrackedMap();
     map.set(0, 1);
     map.set(1, 2);
@@ -67,7 +77,7 @@ module('TrackedMap', function(hooks) {
     assert.equal(iter.next().done, true);
   });
 
-  test('keys', assert => {
+  test('keys', (assert) => {
     const map = new TrackedMap();
     map.set(0, 1);
     map.set(1, 2);
@@ -81,7 +91,7 @@ module('TrackedMap', function(hooks) {
     assert.equal(iter.next().done, true);
   });
 
-  test('values', assert => {
+  test('values', (assert) => {
     const map = new TrackedMap();
     map.set(0, 1);
     map.set(1, 2);
@@ -95,7 +105,7 @@ module('TrackedMap', function(hooks) {
     assert.equal(iter.next().done, true);
   });
 
-  test('forEach', assert => {
+  test('forEach', (assert) => {
     const map = new TrackedMap();
     map.set(0, 1);
     map.set(1, 2);
@@ -114,7 +124,7 @@ module('TrackedMap', function(hooks) {
     assert.equal(values, '011223');
   });
 
-  test('size', assert => {
+  test('size', (assert) => {
     const map = new TrackedMap();
     assert.equal(map.size, 0);
 
@@ -131,7 +141,7 @@ module('TrackedMap', function(hooks) {
     assert.equal(map.size, 1);
   });
 
-  test('delete', assert => {
+  test('delete', (assert) => {
     const map = new TrackedMap();
 
     assert.equal(map.has(0), false);
@@ -143,7 +153,7 @@ module('TrackedMap', function(hooks) {
     assert.equal(map.has(0), false);
   });
 
-  test('clear', assert => {
+  test('clear', (assert) => {
     const map = new TrackedMap();
 
     map.set(0, 1);
@@ -268,7 +278,9 @@ module('TrackedMap', function(hooks) {
       map = new TrackedMap();
 
       get value() {
-        this.map.forEach(() => {/* no op! */});
+        this.map.forEach(() => {
+          /* no op! */
+        });
         return 'test';
       }
 
@@ -311,7 +323,10 @@ module('TrackedMap', function(hooks) {
   reactivityTest(
     'delete unrelated value',
     class extends Component {
-      map = new TrackedMap([['foo', 123], ['bar', 456]]);
+      map = new TrackedMap([
+        ['foo', 123],
+        ['bar', 456],
+      ]);
 
       get value() {
         return this.map.get('foo');
@@ -357,7 +372,6 @@ module('TrackedMap', function(hooks) {
       }
     }
   );
-
 
   eachInReactivityTest(
     'set',

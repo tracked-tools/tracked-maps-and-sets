@@ -10,13 +10,11 @@ module.exports = {
       legacyDecorators: true,
     },
   },
-  plugins: [
-    'ember',
-    '@typescript-eslint'
-  ],
+  plugins: ['ember', '@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
+    'plugin:prettier/recommended',
   ],
   env: {
     browser: true,
@@ -49,9 +47,7 @@ module.exports = {
     // TS
     {
       files: ['**/*.ts'],
-      extends: [
-        'plugin:@typescript-eslint/recommended',
-      ],
+      extends: ['plugin:@typescript-eslint/recommended'],
       rules: {
         '@typescript-eslint/ban-types': [
           'error',

@@ -14,10 +14,10 @@ expectTypeOf<Set<string>>().not.toEqualTypeOf<TrackedSet<string>>();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyFn = (...args: any[]) => any;
 
-module('TrackedSet', function(hooks) {
+module('TrackedSet', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('constructor', assert => {
+  test('constructor', (assert) => {
     const set = new TrackedSet(['foo', 123]);
 
     assert.equal(set.has('foo'), true);
@@ -35,7 +35,7 @@ module('TrackedSet', function(hooks) {
     assert.ok(setFromEmpty instanceof Set);
   });
 
-  test('works with all kinds of values', assert => {
+  test('works with all kinds of values', (assert) => {
     const set = new TrackedSet<
       string | Record<PropertyKey, unknown> | AnyFn | number | boolean | null
     >([
@@ -52,14 +52,14 @@ module('TrackedSet', function(hooks) {
     assert.equal(set.size, 6);
   });
 
-  test('add/has', assert => {
+  test('add/has', (assert) => {
     const set = new TrackedSet();
 
     set.add('foo');
     assert.equal(set.has('foo'), true);
   });
 
-  test('entries', assert => {
+  test('entries', (assert) => {
     const set = new TrackedSet();
     set.add(0);
     set.add(2);
@@ -73,7 +73,7 @@ module('TrackedSet', function(hooks) {
     assert.equal(iter.next().done, true);
   });
 
-  test('keys', assert => {
+  test('keys', (assert) => {
     const set = new TrackedSet();
     set.add(0);
     set.add(2);
@@ -87,7 +87,7 @@ module('TrackedSet', function(hooks) {
     assert.equal(iter.next().done, true);
   });
 
-  test('values', assert => {
+  test('values', (assert) => {
     const set = new TrackedSet();
     set.add(0);
     set.add(2);
@@ -101,7 +101,7 @@ module('TrackedSet', function(hooks) {
     assert.equal(iter.next().done, true);
   });
 
-  test('forEach', assert => {
+  test('forEach', (assert) => {
     const set = new TrackedSet();
     set.add(0);
     set.add(1);
@@ -120,7 +120,7 @@ module('TrackedSet', function(hooks) {
     assert.equal(values, '001122');
   });
 
-  test('size', assert => {
+  test('size', (assert) => {
     const set = new TrackedSet();
     assert.equal(set.size, 0);
 
@@ -137,7 +137,7 @@ module('TrackedSet', function(hooks) {
     assert.equal(set.size, 1);
   });
 
-  test('delete', assert => {
+  test('delete', (assert) => {
     const set = new TrackedSet();
 
     assert.equal(set.has(0), false);
@@ -149,7 +149,7 @@ module('TrackedSet', function(hooks) {
     assert.equal(set.has(0), false);
   });
 
-  test('clear', assert => {
+  test('clear', (assert) => {
     const set = new TrackedSet();
 
     set.add(0);
@@ -259,7 +259,9 @@ module('TrackedSet', function(hooks) {
       set = new TrackedSet();
 
       get value() {
-        this.set.forEach(() => {/* no-op */});
+        this.set.forEach(() => {
+          /* no-op */
+        });
         return 'test';
       }
 
