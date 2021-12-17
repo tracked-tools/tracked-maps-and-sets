@@ -26,6 +26,18 @@ Compatibility
 * Ember CLI v2.13 or above
 * Node.js v12 or above
 
+### TypeScript
+
+This project follows the current draft of [the Semantic Versioning for TypeScript Types][semver] proposal.
+
+- **Currently supported TypeScript versions:** v3.7, v3.8, v3.9, v4.0, v4.1, v4.2, v4.3, v4.4, and v4.5
+- **Compiler support policy:** [simple majors][sm]
+- **Public API:** all published types not in a `-private` module are public
+
+[semver]: https://github.com/chriskrycho/ember-rfcs/blob/semver-for-ts/text/0730-semver-for-ts.md
+[sm]: https://github.com/chriskrycho/ember-rfcs/blob/semver-for-ts/text/0730-semver-for-ts.md#simple-majors
+
+
 
 Installation
 ------------------------------------------------------------------------------
