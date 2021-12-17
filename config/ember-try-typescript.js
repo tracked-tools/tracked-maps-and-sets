@@ -51,6 +51,12 @@ module.exports = {
       },
     },
     {
+      name: 'ts-4.5',
+      npm: {
+        typescript: '~4.5',
+      },
+    },
+    {
       name: 'ts-next',
       npm: {
         devDependencies: {
