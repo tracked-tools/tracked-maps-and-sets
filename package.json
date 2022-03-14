@@ -5,7 +5,7 @@
   "keywords": [
     "ember-addon"
   ],
-  "repository": "https://github.com/pzuraq/tracked-maps-and-sets",
+  "repository": "https://github.com/tracked-tools/tracked-maps-and-sets",
   "license": "MIT",
   "author": "Chris Hewell Garrett",
   "main": "commonjs/index.js",
