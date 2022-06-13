@@ -5979,9 +5979,9 @@ eslint-plugin-prettier@^4.0.0:
     prettier-linter-helpers "^1.0.0"
 
 eslint-plugin-qunit@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-qunit/-/eslint-plugin-qunit-7.0.0.tgz#a782fafe930820f6b62880958ebc3e93de462f02"
-  integrity sha512-yPh02tbQoZK43voIfJFO9CUN5Q6j8ebfrnxEqPr7I4UiYln4RWKDQ4ajaHgV3gJKSAUZwymJ0DsB/YH6btRxIQ==
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-qunit/-/eslint-plugin-qunit-7.3.0.tgz#ea19c6df16b3e231764f93363709172ad3c22bc8"
+  integrity sha512-o80qEsBpnh2hGCLKmNVimPSPY6TP2eyM+wQl9vdOKWJKrQXEgNTMX9mf4X4h3GguaBlmSNnLaPVsycKaZEaGZg==
   dependencies:
     eslint-utils "^3.0.0"
     requireindex "^1.2.0"
